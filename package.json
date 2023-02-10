@@ -3,6 +3,9 @@
   "private": false,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "dev": "vite",
     "prebuild": "rimraf dist",
@@ -10,13 +13,19 @@
     "preview": "vite preview",
     "lint": "eslint --config ./.eslintrc.json src --ext .ts,.tsx,.js,.jsx",
     "test:unit": "vitest run",
-    "husky:init": "rimraf .husky && npx husky install && npx husky add .husky/pre-push \"npm run lint && npm run test:unit && npm run build && npm run prebuild\""
+    "prehusky:install": "rimraf .husky",
+    "husky:install": "npx husky install",
+    "set-git-hook:prepush": "npx husky add .husky/pre-push \"npm run lint && npm run test:unit && npm run build && npm run prebuild\"",
+    "set-git-hook:precommit": "npx husky add .husky/commit-msg \"npx --no-install commitlint --config commitlint.config.cjs --edit $1\"",
+    "husky:init": "npm run husky:install && npm run set-git-hook:prepush && npm run set-git-hook:precommit"
   },
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.4.2",
+    "@commitlint/config-conventional": "^17.4.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
@@ -37,7 +46,6 @@
     "rimraf": "^4.1.2",
     "typescript": "^4.9.3",
     "vite": "^4.1.0",
-    "vite-tsconfig-paths": "^4.0.5",
     "vitest": "^0.28.4"
   }
 }

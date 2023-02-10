@@ -2,16 +2,19 @@
 
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import defineTsConfigPaths from 'vite-tsconfig-paths';
 import path from 'node:path';
 
 export default defineConfig({
-  plugins: [react(), defineTsConfigPaths()],
+  plugins: [react()],
   test: {
     globals: true,
     environment: 'jsdom',
     setupFiles: './setup-tests.ts',
     includeSource: ['src/**/*.{js,jsx,ts,tsx}']
+  },
+  server: {
+    host: true,
+    port: 8080
   },
   resolve: {
     alias: {
